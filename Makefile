@@ -17,7 +17,7 @@ console:
 	php artisan tinker
 
 log:
-	tail -f storage/logs/laravel.log
+	tail -f --lines=100 storage/logs/laravel.log
 
 test:
 	php artisan test

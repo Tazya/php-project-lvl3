@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/domains', 'DomainController@index')->name('domains');
+Route::post('/domains', 'DomainController@store')->name('domains.store');
+Route::get('/domains/{id}', 'DomainController@show')->name('domains.show');
