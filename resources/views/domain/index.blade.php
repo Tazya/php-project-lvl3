@@ -12,12 +12,15 @@
             <th>Last check</th>
             <th>Status Code</th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td><a href="https://php-l3-page-analyzer.herokuapp.com/domains/1">https://yandex.ru</a></td>
-            <td>2020-07-30 06:13:39 </td>
-            <td>200</td>
-        </tr>
+        @foreach ($domains as $domain)
+            <tr>
+                <td>{{ $domain->id }}</td>
+                <td><a href="{{ route('domains.show', $domain->id) }}">{{ $domain->name }}</a></td>
+                <td>{{ $domain->updated_at }}</td>
+                <td>200</td>
+            </tr>
+        @endforeach
+
     </table>
 </div>
 @endsection
