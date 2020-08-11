@@ -20,3 +20,6 @@ Route::get('/', function () {
 Route::get('/domains', 'DomainController@index')->name('domains.index');
 Route::post('/domains', 'DomainController@store')->name('domains.store');
 Route::get('/domains/{id}', 'DomainController@show')->name('domains.show');
+
+Route::get('/ajax/domain-checks', 'DomainCheckController@index');
+Route::post('/ajax/domain-checks', 'DomainCheckController@store');
