@@ -11,7 +11,7 @@ class DomainCheckController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $data = $this->validate($request, [
                 'domain_id' => ['required', Rule::exists('domains', 'id')],
             ]);
@@ -27,7 +27,7 @@ class DomainCheckController extends Controller
 
     public function store(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $validatedData = $this->validate($request, [
                 'domain_id' => ['required', Rule::exists('domains', 'id')],
             ]);

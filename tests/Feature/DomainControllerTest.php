@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Domain;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -36,12 +35,12 @@ class DomainControllerTest extends TestCase
     public function testShow()
     {
         $currentDateTime = Carbon::now();
-        $this->domainData = [
+        $domainData = [
             'name' => "https://" . Str::random(5) . ".com",
             'created_at' => $currentDateTime,
             'updated_at' => $currentDateTime
         ];
-        DB::table('domains')->insert($this->domainData);
+        DB::table('domains')->insert($domainData);
 
         $response = $this->get(route('domains.show', 1));
         $response->assertOk();
