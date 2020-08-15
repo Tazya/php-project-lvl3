@@ -13,7 +13,20 @@ class DomainController extends Controller
 {
     public function index()
     {
-        $domains = DB::table('domains')->get();
+        $domains = DB::table('domains')
+            ->addSelect(['last_check_created_at' => DB::table('domain_checks')
+                ->select('created_at')
+                ->whereColumn('domain_id', 'domains.id')
+                ->latest()
+                ->take(1)
+            ])
+            ->addSelect(['last_check_status_code' => DB::table('domain_checks')
+                ->select('status_code')
+                ->whereColumn('domain_id', 'domains.id')
+                ->latest()
+                ->take(1)
+            ])
+            ->get();
 
         return view('domain.index', compact('domains'));
     }

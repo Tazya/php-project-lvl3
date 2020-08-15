@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class DomainCheckController extends Controller
 {
@@ -32,13 +33,20 @@ class DomainCheckController extends Controller
                 'domain_id' => ['required', Rule::exists('domains', 'id')],
             ]);
 
+            $domainId = $validatedData['domain_id'];
+            $domain = DB::table('domains')->find($domainId);
+            $response = Http::get($domain->name);
+
             $currentDate = Carbon::now();
-            $timestamps = [
+
+            $domainCheckData = [
+                'domain_id' => $domainId,
+                'status_code' => $response->status(),
                 'created_at' => $currentDate,
                 'updated_at' => $currentDate,
             ];
 
-            DB::table('domain_checks')->insert(array_merge($validatedData, $timestamps));
+            DB::table('domain_checks')->insert($domainCheckData);
 
             return response("Domain checked!", 200);
         }
