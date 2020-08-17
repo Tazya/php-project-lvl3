@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class DomainCheckControllerTest extends TestCase
 {
@@ -51,12 +52,14 @@ class DomainCheckControllerTest extends TestCase
 
     public function testIndex()
     {
+        Http::fake();
         $response = $this->ajaxGet(route('ajax.domain-checks.index') . "?domain_id=1");
         $response->assertSuccessful();
     }
 
     public function testStore()
     {
+        Http::fake();
         $domainCheckData = [
             'domain_id' => 1,
         ];
