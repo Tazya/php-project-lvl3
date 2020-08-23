@@ -3,6 +3,9 @@
 namespace App;
 
 use DiDom\Document;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class DomainCheck
 {
@@ -19,5 +22,24 @@ class DomainCheck
         $description = $descriptionElement ? $descriptionElement->getAttribute('content') : null;
 
         return compact('h1', 'keywords', 'description');
+    }
+
+    public static function makeCheck($domainId)
+    {
+        $domain = DB::table('domains')->find($domainId);
+        $response = Http::get($domain->name);
+
+        $currentDate = Carbon::now();
+
+        $seoData = self::parseSeoDataFromHtml($response->body());
+
+        $domainCheckData = [
+            'domain_id' => $domainId,
+            'status_code' => $response->status(),
+            'created_at' => $currentDate,
+            'updated_at' => $currentDate,
+        ];
+
+        DB::table('domain_checks')->insert(array_merge($domainCheckData, $seoData));
     }
 }

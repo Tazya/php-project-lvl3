@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain;
+use App\DomainCheck;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class DomainController extends Controller
@@ -57,6 +59,7 @@ class DomainController extends Controller
 
         if ($domain) {
             DB::table('domains')->where('name', $normalizedUrl)->update(['updated_at' => $currentDate]);
+            $id = $domain->id;
             flash("Domain '$normalizedUrl' already exists!")->success();
         } else {
             $timestamps = [
@@ -64,11 +67,11 @@ class DomainController extends Controller
                 'updated_at' => $currentDate,
             ];
 
-            DB::table('domains')->insert(array_merge($validatedData, $timestamps));
+            $id = DB::table('domains')->insertGetId(array_merge($validatedData, $timestamps));
+
+            DomainCheck::makeCheck($id);
             flash("Domain '$normalizedUrl' successfully added!")->success();
         }
-
-        $id = DB::table('domains')->where('name', $normalizedUrl)->value('id');
         return redirect()->route('domains.show', compact('id'));
     }
 }

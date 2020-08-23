@@ -60,10 +60,10 @@ class DomainCheckControllerTest extends TestCase
     public function testStore()
     {
         $bodyHtml = file_get_contents("tests/Fixtures/body.html");
-
         Http::fake([
             '*' => Http::response($bodyHtml),
         ]);
+
         $domainCheckData = [
             'domain_id' => 1,
             'h1' => 'Site Header',

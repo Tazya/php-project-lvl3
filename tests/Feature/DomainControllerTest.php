@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class DomainControllerTest extends TestCase
 {
@@ -71,6 +72,11 @@ class DomainControllerTest extends TestCase
 
     public function testStore()
     {
+        $bodyHtml = file_get_contents("tests/Fixtures/body.html");
+        Http::fake([
+            '*' => Http::response($bodyHtml),
+        ]);
+
         $domainData = [
             'name' => "https://" . Str::random(5) . ".com",
         ];
