@@ -28,7 +28,7 @@ class DomainController extends Controller
                 ->latest()
                 ->take(1)
             ])
-            ->get();
+            ->paginate(5);
 
         return view('domain.index', compact('domains'));
     }

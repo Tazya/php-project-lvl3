@@ -19,7 +19,7 @@ class DomainCheckController extends Controller
             $domainChecks = DB::table('domain_checks')
                 ->where('domain_id', $data['domain_id'])
                 ->orderByDesc('created_at')
-                ->paginate(20);
+                ->paginate(10);
 
             return view('domain-check.index', compact('domainChecks'))->render();
         }

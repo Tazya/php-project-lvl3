@@ -20,7 +20,7 @@
                 <td>{{ $domain->last_check_status_code }}</td>
             </tr>
         @endforeach
-
     </table>
+    {{ $domains->links() }}
 </div>
 @endsection
