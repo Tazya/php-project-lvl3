@@ -59,12 +59,18 @@ class DomainCheckControllerTest extends TestCase
 
     public function testStore()
     {
-        Http::fake();
+        $bodyHtml = file_get_contents("tests/Fixtures/body.html");
+
+        Http::fake([
+            '*' => Http::response($bodyHtml),
+        ]);
         $domainCheckData = [
             'domain_id' => 1,
+            'h1' => 'Site Header',
+            'keywords' => 'document,site',
         ];
 
-        $response = $this->ajaxPost(route('ajax.domain-checks.store', $domainCheckData));
+        $response = $this->ajaxPost(route('ajax.domain-checks.store', ['domain_id' => 1]));
         $response->assertSessionHasNoErrors();
         $response->assertSuccessful();
 

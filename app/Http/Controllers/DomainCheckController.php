@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use App\DomainCheck;
 
 class DomainCheckController extends Controller
 {
@@ -39,6 +40,8 @@ class DomainCheckController extends Controller
 
             $currentDate = Carbon::now();
 
+            $seoData = DomainCheck::parseSeoDataFromHtml($response->body());
+
             $domainCheckData = [
                 'domain_id' => $domainId,
                 'status_code' => $response->status(),
@@ -46,7 +49,7 @@ class DomainCheckController extends Controller
                 'updated_at' => $currentDate,
             ];
 
-            DB::table('domain_checks')->insert($domainCheckData);
+            DB::table('domain_checks')->insert(array_merge($domainCheckData, $seoData));
 
             return response("Domain checked!", 200);
         }
