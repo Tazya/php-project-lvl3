@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class DomainCheck
 {
-    public static function parseSeoDataFromHtml($html)
+    public static function getPageInfo($html)
     {
         $document = new Document($html);
 
@@ -31,7 +31,7 @@ class DomainCheck
 
         $currentDate = Carbon::now();
 
-        $seoData = self::parseSeoDataFromHtml($response->body());
+        $seoData = self::getPageInfo($response->body());
 
         $domainCheckData = [
             'domain_id' => $domainId,
