@@ -8,13 +8,18 @@
   * Extensions: mbstring, curl, dom, xml,zip, sqlite3
   * Composer
   * Node.js & npm
-  * SQLite for local
+  * Database: PostgreSQL
+  * SQLite for testing
   * [heroku cli](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
 
 ### Setup
 
 ```sh
 $ make setup
+```
+After setup write your database variables in .env file and run migrate:
+
+```sh
 $ make migrate
 ```
 
