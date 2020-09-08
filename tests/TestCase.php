@@ -3,24 +3,13 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class TestCase extends BaseTestCase
 {
+    use DatabaseTransactions;
+    use DatabaseMigrations;
+
     use CreatesApplication;
-
-    /**
-     * Make ajax POST request
-     */
-    protected function ajaxPost($uri, array $data = [])
-    {
-        return $this->post($uri, $data, ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
-    }
-
-    /**
-     * Make ajax GET request
-     */
-    protected function ajaxGet($uri)
-    {
-        return $this->get($uri, ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
-    }
 }

@@ -11,9 +11,9 @@
                         <h1 class="display-3">Page Analyzer</h1>
                         <p class="lead">Check web pages for free</p>
                         <form action="{{ route('domains.store') }}" method="post" class="d-flex justify-content-center">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="text" name="name" value="" class="form-control form-control-lg" placeholder="https://www.example.com">
-                        <button type="submit" class="btn btn-lg btn-primary ml-3 px-5 text-uppercase">Check</button>
+                            @csrf
+                            <input type="text" name="name" value="" class="form-control form-control-lg" placeholder="https://www.example.com">
+                            <button type="submit" class="btn btn-lg btn-primary ml-3 px-5 text-uppercase">Check</button>
                         </form>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 @if ($domainChecks)
-    <table class="table table-bordered table-hover text-nowrap">
+    <table class="table table-bordered table-hover text-nowrap mt-3">
         <tr>
             <th>Id</th>
             <th>Status Code</th>

@@ -27,8 +27,9 @@
         </table>
     </div>
     <h2 class="mt-5 mb-3">Checks</h2>
-    <button data-domain-id="{{ $domain->id }}" class="btn btn-primary domain-check-btn">Run check</button>
-    <div id="domain-checks" data-domain-id="{{ $domain->id }}">
-
-    </div>
+    <form method="post" action="{{ route('domain-checks.store', $domain->id) }}">
+        @csrf
+        <input type="submit" class="btn btn-primary" value="Run check">
+    </form>
+    @include('domain-check.index')
 @endsection

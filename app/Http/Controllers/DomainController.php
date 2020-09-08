@@ -35,7 +35,12 @@ class DomainController extends Controller
     {
         $domain = DB::table('domains')->find($id);
 
-        return view('domain.show', compact('domain'));
+        $domainChecks = DB::table('domain_checks')
+            ->where('domain_id', $id)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return view('domain.show', compact('domain', 'domainChecks'));
     }
 
     public function store(Request $request)

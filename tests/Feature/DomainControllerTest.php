@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
@@ -16,34 +14,9 @@ class DomainControllerTest extends TestCase
     {
         parent::setUp();
 
-        $sqlDomain =
-        "CREATE TABLE domains (
-            id INTEGER NOT NULL PRIMARY KEY,
-            name character varying(255) NOT NULL,
-            created_at timestamp(0),
-            updated_at timestamp(0)
-        )";
-
-        $sqlDomainCheck =
-        "CREATE TABLE domain_checks (
-            id INTEGER NOT NULL PRIMARY KEY,
-            domain_id bigint NOT NULL,
-            status_code integer,
-            h1 character varying(255),
-            keywords character varying(255),
-            description text,
-            created_at timestamp(0),
-            updated_at timestamp(0),
-            FOREIGN KEY (domain_id)
-                REFERENCES domains (id)
-        )";
-
-        DB::statement($sqlDomain);
-        DB::statement($sqlDomainCheck);
-
         $currentDateTime = Carbon::now();
         $domainData = [
-            'name' => "https://" . Str::random(5) . ".com",
+            'name' => Faker::create()->url,
             'created_at' => $currentDateTime,
             'updated_at' => $currentDateTime
         ];
@@ -60,7 +33,7 @@ class DomainControllerTest extends TestCase
     {
         $currentDateTime = Carbon::now();
         $domainData = [
-            'name' => "https://" . Str::random(5) . ".com",
+            'name' => Faker::create()->url,
             'created_at' => $currentDateTime,
             'updated_at' => $currentDateTime
         ];
@@ -73,12 +46,13 @@ class DomainControllerTest extends TestCase
     public function testStore()
     {
         $bodyHtml = file_get_contents("tests/Fixtures/body.html");
+
         Http::fake([
             '*' => Http::response($bodyHtml),
         ]);
 
         $domainData = [
-            'name' => "https://" . Str::random(5) . ".com",
+            'name' => Faker::create()->url,
         ];
 
         $response = $this->post(route('domains.store', $domainData));
