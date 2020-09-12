@@ -20,7 +20,8 @@ class DomainCheckControllerTest extends TestCase
             'created_at' => $currentDateTime,
             'updated_at' => $currentDateTime
         ];
-        DB::table('domains')->insert($domainData);
+
+        $this->domainId = DB::table('domains')->insertGetId($domainData);
     }
 
     public function testStore()
@@ -31,12 +32,12 @@ class DomainCheckControllerTest extends TestCase
         ]);
 
         $domainCheckData = [
-            'domain_id' => 1,
+            'domain_id' => $this->domainId,
             'h1' => 'Site Header',
             'keywords' => 'document,site',
         ];
 
-        $response = $this->post(route('domain-checks.store', 1));
+        $response = $this->post(route('domain-checks.store', $this->domainId));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 

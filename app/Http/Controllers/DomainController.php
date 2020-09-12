@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Domain;
-use App\DomainCheck;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +24,7 @@ class DomainController extends Controller
                 ->latest()
                 ->take(1)
             ])
-            ->paginate(5);
+            ->paginate(20);
 
         return view('domain.index', compact('domains'));
     }
@@ -38,28 +36,23 @@ class DomainController extends Controller
         $domainChecks = DB::table('domain_checks')
             ->where('domain_id', $id)
             ->orderByDesc('created_at')
-            ->paginate(10);
+            ->paginate(20);
 
         return view('domain.show', compact('domain', 'domainChecks'));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $data = $this->validate($request, [
             'name' => 'required|url'
         ]);
 
-        foreach ($validator->errors()->all() as $message) {
-            flash($message)->error();
-        }
+        $urlComponents = parse_url($data['name']);
+        $normalizedUrl = "{$urlComponents['scheme']}://{$urlComponents['host']}";
 
-        $validator->validate();
-        $validatedData = $validator->validated();
-        $normalizedUrl = Domain::normalizeUrl($validatedData['name']);
         $currentDate = Carbon::now();
 
         $domain = DB::table('domains')->where('name', $normalizedUrl)->first();
-
         if ($domain) {
             DB::table('domains')->where('name', $normalizedUrl)->update(['updated_at' => $currentDate]);
             $id = $domain->id;
@@ -70,11 +63,10 @@ class DomainController extends Controller
                 'updated_at' => $currentDate,
             ];
 
-            $id = DB::table('domains')->insertGetId(array_merge($validatedData, $timestamps));
-
-            DomainCheck::makeCheck($id);
+            $id = DB::table('domains')->insertGetId(array_merge($data, $timestamps));
             flash("Domain '$normalizedUrl' successfully added!")->success();
         }
+
         return redirect()->route('domains.show', compact('id'));
     }
 }

@@ -10,19 +10,6 @@ use Illuminate\Support\Facades\Http;
 
 class DomainControllerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $currentDateTime = Carbon::now();
-        $domainData = [
-            'name' => Faker::create()->url,
-            'created_at' => $currentDateTime,
-            'updated_at' => $currentDateTime
-        ];
-        DB::table('domains')->insert($domainData);
-    }
-
     public function testIndex()
     {
         $response = $this->get(route('domains.index'));
@@ -37,9 +24,9 @@ class DomainControllerTest extends TestCase
             'created_at' => $currentDateTime,
             'updated_at' => $currentDateTime
         ];
-        DB::table('domains')->insert($domainData);
 
-        $response = $this->get(route('domains.show', 1));
+        $id = DB::table('domains')->insertGetId($domainData);
+        $response = $this->get(route('domains.show', $id));
         $response->assertOk();
     }
 
