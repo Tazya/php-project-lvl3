@@ -4,7 +4,7 @@
   Demo: [http://still-headland-57389.herokuapp.com/](http://still-headland-57389.herokuapp.com/)
 ### Requirements
 
-  * PHP ^7.2.5
+  * PHP ^7.3
   * Extensions: mbstring, curl, dom, xml,zip, sqlite3
   * Composer
   * Node.js & npm
