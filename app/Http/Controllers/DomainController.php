@@ -43,9 +43,14 @@ class DomainController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'name.required' => 'Url is required',
+            'name.url' => 'Not a valid url',
+        ];
+
         $data = $this->validate($request, [
             'name' => 'required|url'
-        ]);
+        ], $messages);
 
         $urlComponents = parse_url($data['name']);
         $normalizedUrl = "{$urlComponents['scheme']}://{$urlComponents['host']}";
